@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.immikeli.githubusersearch.R;
 import com.immikeli.githubusersearch.data.User;
 import com.immikeli.githubusersearch.data.UserRepositoryImpl;
@@ -25,6 +26,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.OkHttpClient;
 
 public class UsersActivity extends AppCompatActivity implements UsersContract.View {
 
@@ -42,7 +44,7 @@ public class UsersActivity extends AppCompatActivity implements UsersContract.Vi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
         ButterKnife.bind(this);
-        mActionsListener = new UsersPresenter(new UserRepositoryImpl(), this);
+        mActionsListener = new UsersPresenter(new UserRepositoryImpl(new OkHttpClient()), this);
         mListAdapter = new UsersAdapter();
         mListView.setLayoutManager(new StaggeredGridLayoutManager(2, RecyclerView.VERTICAL));
         mListView.setAdapter(mListAdapter);
@@ -78,7 +80,8 @@ public class UsersActivity extends AppCompatActivity implements UsersContract.Vi
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             User user = mUsers.get(position);
-            holder.info.setText(user.name);
+            holder.info.setText(user.login);
+            Glide.with(UsersActivity.this).load(user.avatar_url).centerCrop().into(holder.avatar);
         }
 
         @Override

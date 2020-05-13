@@ -2,11 +2,24 @@ package com.immikeli.githubusersearch.data;
 
 import android.os.AsyncTask;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
+
 import java.util.List;
 
-public class UserRepositoryImpl implements UserRepository {
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
-    public UserRepositoryImpl() {
+public class UserRepositoryImpl implements UserRepository {
+    private static final String TAG = UserRepositoryImpl.class.getSimpleName();
+
+    private OkHttpClient mHttpClient = null;
+
+    public UserRepositoryImpl(OkHttpClient client) {
+        mHttpClient = client;
     }
 
     @Override
@@ -26,7 +39,20 @@ public class UserRepositoryImpl implements UserRepository {
 
         @Override
         protected List<User> doInBackground(Void... voids) {
-            // GitHub search user API
+            Request request = new Request.Builder()
+                    .url("https://api.github.com/search/users?q=" + keyword)
+                    .build();
+
+            try {
+                Response response = mHttpClient.newCall(request).execute();
+                JsonObject result = JsonParser.parseString(response.body().string()).getAsJsonObject();
+                if (result.has("items")) {
+                    List<User> users = new Gson().fromJson(result.getAsJsonArray("items"), new TypeToken<List<User>>(){}.getType());
+                    return users;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return null;
         }
 

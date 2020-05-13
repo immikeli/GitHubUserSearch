@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">GitHubUserSearch</string>
+    <string name="user_name">user name</string>
+    <string name="search">search</string>
+</resources>

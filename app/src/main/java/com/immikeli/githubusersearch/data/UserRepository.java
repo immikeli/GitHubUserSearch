@@ -9,6 +9,6 @@ public interface UserRepository {
         void onResult(List<User> users);
     }
 
-    void searchUser(String keyword, SearchUserCallback callback);
+    void searchUser(int pageIdx, String keyword, SearchUserCallback callback);
 
 }

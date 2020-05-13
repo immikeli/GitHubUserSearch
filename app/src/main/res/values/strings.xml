@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">GitHubUserSearch</string>
-    <string name="user_name">user name</string>
+    <string name="app_name">GitHub User Search</string>
+    <string name="user_name">Search for user</string>
     <string name="search">search</string>
+    <string name="error_search_no_result">Can not find user</string>
+    <string name="error_search_user">Search user error!</string>
 </resources>

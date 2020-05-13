@@ -12,11 +12,16 @@ public class UsersContract {
 
         void showUsers(List<User> users);
 
+        void showLoadError();
+
+        void showEmptyResult();
     }
 
     interface ActionsListener {
 
         void searchUser(String keyword);
+
+        void loadMoreUsers();
 
     }
 
